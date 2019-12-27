@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
+const fileUpload = require('express-fileupload');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -34,7 +35,7 @@ app.use(passport.initialize());
 app.use(flash());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(fileUpload());
 
 app.use('/', routes);
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const Account = require('../models/account');
-const Posts = require('../models/posts');
+const Post = require('../models/posts');
 const router = express.Router();
 
 // authentication check
@@ -18,16 +18,21 @@ router.get('/', (req, res) => {
     res.render('index', { user : req.user });
 });
 
+//todo: get all posts
+
 router.get('/panel', checkAuthentication, (req, res) => {
     res.render('panel', { });
 });
 
-router.post('/addpost', checkAuthentication, (req, res) => {
-  //TODO: logic for adding post to db
+router.post('/panel',  (req, res) => {
+  const { title, content, } = req.body;
+  console.log(title, content, req.files.featured.name);
+  
   const post = new Post({ 
-    name: 'Zildjian',
-    content: 'ble ble',
-    img: 'myimg/bleble'
+    title,
+    content,
+    img: req.files.featured.name,
+    created_at: new Date().toISOString()
    });
   post.save().then(() => console.log('post has been saved'));
   res.render('panel', { });
