@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .container
+    h1 Panel Page
+    p.lead Add or remove something worthwhile here.
+    br
+    form(role='form', action="/addpost",method="post", style='max-width: 300px;')
+      .form-group
+          input.form-control(type='text', name="title", placeholder='Enter Title')
+      .form-group
+        input.form-control(type='text', name="content", placeholder='Add content')
+      .form-group
+        input.form-control(type='text', name="content", placeholder='Add content')
+      .input-group
+      .input-group-prepend
+        span#inputGroupFileAddon01.input-group-text Upload
+      .custom-file
+        input#inputGroupFile01.custom-file-input(type='file', aria-describedby='inputGroupFileAddon01')
+        label.custom-file-label(for='inputGroupFile01') Choose file
+      button.btn.btn-default(type='submit') Submit
+      &nbsp;
+      a(href='/')
+        button.btn.btn-primary(type="button") Cancel
