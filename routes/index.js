@@ -18,7 +18,14 @@ router.get('/', (req, res) => {
     res.render('index', { user : req.user });
 });
 
-//todo: get all posts
+//get all posts
+router.get('/api/posts', (req, res) => {
+  Post.find().sort({created_at: -1}).lean().exec(function (err, posts) {
+    return res.end(JSON.stringify(posts));
+  })
+    // res.render('panel', { });
+});
+
 
 router.get('/panel', checkAuthentication, (req, res) => {
     res.render('panel', { });
