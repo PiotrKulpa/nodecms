@@ -8,54 +8,7 @@ const jwt = require('jsonwebtoken');
 const Account = require('../models/account');
 const loginController = require('../controllers/login');
 const logoutController = require('../controllers/logout');
-
-// local authentication check
-const checkAuthentication = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    //req.isAuthenticated() will return true if user is logged in
-    next();
-  } else {
-    res.redirect("/login");
-  }
-}
-
-// jwt authentication
-const checkJWTAuthentication = (req, res, next) => {
-  // We can obtain the session token from the requests cookies, which come with every request
-  const token = req.cookies.token
-
-  // if the cookie is not set, return an unauthorized error
-  if (!token) {
-    return res.status(401).json({
-      message: 'Something is not right',
-    }).end()
-  }
-
-  var payload
-  try {
-    // Parse the JWT string and store the result in `payload`.
-    // Note that we are passing the key in this method as well. This method will throw an error
-    // if the token is invalid (if it has expired according to the expiry time we set on sign in),
-    // or if the signature does not match
-    payload = jwt.verify(token, 'your_jwt_secret')
-  } catch (e) {
-    if (e instanceof jwt.JsonWebTokenError) {
-      // if the error thrown is because the JWT is unauthorized, return a 401 error
-      return res.status(401).json({
-        message: 'Something is not right',
-      }).end();
-    }
-    // otherwise, return a bad request error
-    return res.status(400).json({
-      message: 'Something is not right',
-    }).end()
-  }
-
-  // Finally, return the welcome message to the user, along with their
-  // username given in the token
-  // or do next()
-  next();
-}
+const jwtAuthController = require('../controllers/checkJWTAuthentication');
 
 router.get('/', (req, res) => {
   res.render('index', { user: req.user });
@@ -69,8 +22,7 @@ router.get('/api/posts', (req, res) => {
   // res.render('panel', { });
 });
 
-
-router.get('/panel', checkAuthentication, (req, res) => {
+router.get('/panel', (req, res) => {
   res.render('panel', {});
 });
 
@@ -118,7 +70,7 @@ router.get('/login', (req, res) => {
 router.post('/login', loginController);
 
 /* test JWT authorization */
-router.post('/profile', checkJWTAuthentication, (req, res) => {
+router.post('/profile', jwtAuthController, (req, res) => {
   res.send('checkJWTAuthentication works fine');
 });
 
