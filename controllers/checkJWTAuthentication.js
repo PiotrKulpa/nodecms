@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config.json');
 
 const checkJWTAuthentication = (req, res, next) => {
   // We can obtain the session token from the requests cookies, which come with every request
@@ -17,7 +18,7 @@ const checkJWTAuthentication = (req, res, next) => {
     // Note that we are passing the key in this method as well. This method will throw an error
     // if the token is invalid (if it has expired according to the expiry time we set on sign in),
     // or if the signature does not match
-    payload = jwt.verify(token, 'your_jwt_secret')
+    payload = jwt.verify(token, config.jwtSecret)
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
       // if the error thrown is because the JWT is unauthorized, return a 401 error

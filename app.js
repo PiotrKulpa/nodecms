@@ -10,9 +10,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
-// const passportJWT = require("passport-jwt");
-// const JWTStrategy   = passportJWT.Strategy;
-// const ExtractJWT = passportJWT.ExtractJwt;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -47,28 +44,6 @@ var Account = require('./models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
-// var JwtStrategy = require('passport-jwt').Strategy,
-//     ExtractJwt = require('passport-jwt').ExtractJwt;
-// var opts = {}
-// opts.jwtFromRequest = ExtractJwt.fromHeader('auth');
-// opts.secretOrKey = 'your_jwt_secret';
-// opts.issuer = 'accounts.examplesoft.com';
-// opts.audience = 'yoursite.net';
-// passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
- 
-  
-//     Account.findOne({id: jwt_payload.sub}, function(err, user) {
-//         if (err) {
-//             return done(err, false);
-//         }
-//         if (user) {
-//             return done(null, user);
-//         } else {
-//             return done(null, false);
-//             // or you could create a new account
-//         }
-//     });
-// }));
 
 // mongoose
 mongoose.connect('mongodb://localhost/nodecms');

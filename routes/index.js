@@ -1,44 +1,21 @@
 // todo: move logic to controllers
 const express = require('express');
 const passport = require('passport');
-const Post = require('../models/posts');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 const Account = require('../models/account');
 const loginController = require('../controllers/login');
 const logoutController = require('../controllers/logout');
+const PostsController = require('../controllers/posts');
 const jwtAuthController = require('../controllers/checkJWTAuthentication');
 
 router.get('/', (req, res) => {
   res.render('index', { user: req.user });
 });
 
-//get all posts
-router.get('/api/posts', (req, res) => {
-  Post.find().sort({ created_at: -1 }).lean().exec(function (err, posts) {
-    return res.end(JSON.stringify(posts));
-  })
-  // res.render('panel', { });
-});
-
-router.get('/panel', (req, res) => {
-  res.render('panel', {});
-});
-
-router.post('/panel', (req, res) => {
-  const { title, content, } = req.body;
-  console.log(title, content, req.files.featured.name);
-
-  const post = new Post({
-    title,
-    content,
-    img: req.files.featured.name,
-    created_at: new Date().toISOString()
-  });
-  post.save().then(() => console.log('post has been saved'));
-  res.render('panel', {});
-});
+/* BLOG/POSTS CRUD METHODS */
+router.get('/api/posts', PostsController.getPosts);
+router.post('/api/addpost', PostsController.addPost);
 
 router.get('/register', (req, res) => {
   res.render('register', {});
