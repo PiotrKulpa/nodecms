@@ -2,6 +2,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const config = require('../config.json');
+const jwtSign = require('./jwtSign');
 
 
 const login = (req, res, next) => {
@@ -13,19 +14,13 @@ const login = (req, res, next) => {
       });
     }
     req.login(user, { session: false }, (err) => {
+      
       if (err) {
         res.send(err);
       }
-      // generate a signed son web token with the contents of user object and return it in the response
-      const token = jwt.sign(user.toJSON(), config.jwtSecret, {
-        algorithm: 'HS256',
-        expiresIn: 3600 // in seconds
-      });
+      
+      jwtSign(user, res);
 
-      // set the cookie as the token string, with a similar max age as the token
-      // here, the max age is in milliseconds, so we multiply by 1000
-      res.cookie('token', token, { maxAge: 3600 * 1000 });
-      res.end();
     });
   })(req, res);
 }

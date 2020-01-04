@@ -4,6 +4,7 @@ const passport = require('passport');
 const router = express.Router();
 
 const Account = require('../models/account');
+const registerController = require('../controllers/register');
 const loginController = require('../controllers/login');
 const logoutController = require('../controllers/logout');
 const PostsController = require('../controllers/posts');
@@ -17,31 +18,8 @@ router.get('/', (req, res) => {
 router.get('/api/posts', PostsController.getPosts);
 router.post('/api/addpost', PostsController.addPost);
 
-router.get('/register', (req, res) => {
-  res.render('register', {});
-});
-
-router.post('/register', (req, res, next) => {
-  Account.register(new Account({ username: req.body.username }), req.body.password, (err, account) => {
-    if (err) {
-      return res.render('register', { error: err.message });
-    }
-
-    passport.authenticate('local')(req, res, () => {
-      req.session.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
-      });
-    });
-  });
-});
-
-
-router.get('/login', (req, res) => {
-  res.render('login', { user: req.user, error: req.flash('error') });
-});
+/* POST register. */
+router.post('/register', registerController);
 
 /* POST login. */
 router.post('/login', loginController);
@@ -54,8 +32,12 @@ router.post('/profile', jwtAuthController, (req, res) => {
 /* POST logout. */
 router.post('/logout', logoutController);
 
-router.get('/ping', (req, res) => {
-  res.status(200).send("pong!");
-});
+// router.get('/register', (req, res) => {
+//   res.render('register', {});
+// });
+
+// router.get('/login', (req, res) => {
+//   res.render('login', { user: req.user, error: req.flash('error') });
+// });
 
 module.exports = router;
