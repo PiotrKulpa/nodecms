@@ -16,7 +16,10 @@ router.get('/', (req, res) => {
 
 /* BLOG/POSTS CRUD METHODS */
 router.get('/api/posts', PostsController.getPosts);
+router.get('/api/post/:id', PostsController.getPostById);
 router.post('/api/addpost', PostsController.addPost);
+router.post('/api/deletepost/:id', PostsController.deletePostById);
+router.post('/api/updatepost/:id', PostsController.updatePostById);
 
 /* POST register. */
 router.post('/register', registerController);

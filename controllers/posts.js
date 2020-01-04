@@ -25,7 +25,41 @@ const getPosts = (req, res, next) => {
   });
 }
 
+const getPostById = (req, res, next) => {
+  const { id } = req.params;
+  Post.findById({_id: id}, function (err, post) {
+    if (err) return next(err);
+    if (0 === post.length) return next(new NotFoundError);
+    return res.end(JSON.stringify(post));
+  });
+}
+
+const deletePostById = (req, res, next) => {
+  const { id } = req.params;
+  Post.deleteOne({_id: id}, function (err) {
+    if (err) return next(err);
+    return res.status(200).json({
+      message: 'Post has been deleted'
+    }).end();
+  });
+}
+
+const updatePostById = (req, res, next) => {
+  const { id } = req.params;
+  const { title, content, } = req.body;
+  Post.updateOne({_id: id}, {
+    title,
+    content,
+    img: req.files.featured.name,
+    created_at: new Date().toISOString(),
+  })
+  .then(() => res.status(200).json({message: 'Post has been updated'}).end());
+}
+
 module.exports = {
   addPost,
   getPosts,
+  getPostById,
+  deletePostById,
+  updatePostById,
 }
