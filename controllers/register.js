@@ -4,6 +4,7 @@ const Account = require('../models/account');
 const jwtSign = require('./jwtSign');
 
 const register = (req, res, next) => {
+console.log(req.body);
 
   Account.register(new Account({ username: req.body.username }), req.body.password, (err, account) => {
     if (err) {

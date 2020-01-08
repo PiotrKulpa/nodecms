@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Post = new Schema({
-    title: String,
-    content: String,
-    img: String,
-    created_at: Date
+    title: {type: String, required: true},
+    content: {type: String, required: true},
+    img: {type: String, required: true},
+    created_at: {type: Date, required: true}
 });
 
 

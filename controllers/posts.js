@@ -18,7 +18,9 @@ const addPost = (req, res) => {
 }
 
 const getPosts = (req, res, next) => {
-  Post.find().sort({ created_at: -1 }).lean().exec(function (err, posts) {
+  const paginationLimit = 2;
+  const { id = 0 } = req.params;
+  Post.find().sort({ created_at: -1 }).skip(id * paginationLimit).limit(paginationLimit).lean().exec(function (err, posts) {
     if (err) return next(err);
     if (0 === posts.length) return next(new NotFoundError);
     return res.end(JSON.stringify(posts));
