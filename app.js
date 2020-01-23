@@ -10,9 +10,13 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
+var graphqlHTTP = require('express-graphql');
+var { buildSchema } = require('graphql');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+const schema = require('./graphql/schema')
+const root = require('./graphql/resolvers')
 
 var app = express();
 
@@ -36,6 +40,12 @@ app.use(flash());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true,
+}));
 
 app.use('/', routes);
 
