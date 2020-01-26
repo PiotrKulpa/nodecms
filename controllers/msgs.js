@@ -1,4 +1,4 @@
-const Post = require('../models/posts');
+const Msgs = require('../models/msgs');
 
 const addPost = (req, res) => {
   const { title, content, } = req.body;
@@ -17,19 +17,19 @@ const addPost = (req, res) => {
   });
 }
 
-const getPosts = async (req, res, next) => {
+const getMsgs = async (req, res, next) => {
   // const paginationLimit = 2;
   // // const { id = 0 } = req.params;
   // const id = 0;
-  // Post.find().sort({ created_at: -1 }).skip(id * paginationLimit).limit(paginationLimit).lean().exec(function (err, posts) {
+  // Msgs.find().lean().exec(function (err, posts) {
   //   if (err) return next(err);
   //   if (0 === posts.length) return next(new NotFoundError);
   //   // return res.end(JSON.stringify(posts));
-  //   console.log(typeof posts[0].created_at);
+  //   console.log(posts);
     
   //   return posts;
   // });
-  const docs = await Post.find({}).lean();
+  const docs = await Msgs.find({}).lean();
   console.log(docs);
   return docs;
 }
@@ -66,9 +66,5 @@ const updatePostById = (req, res, next) => {
 }
 
 module.exports = {
-  addPost,
-  getPosts,
-  getPostById,
-  deletePostById,
-  updatePostById,
+  getMsgs,
 }

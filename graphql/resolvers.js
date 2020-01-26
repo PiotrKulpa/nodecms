@@ -1,4 +1,6 @@
 
+const PostsController = require('../controllers/posts');
+const MsgsController = require('../controllers/msgs');
 
 var myTab = [{id: 1, name: "Piotr"}, {id: 2, name: "Ala"}];
 var fakeDatabase = {};
@@ -12,6 +14,8 @@ const root = {
     console.log(fakeDatabase);
     return message;
   },
+  getPosts: PostsController.getPosts,
+  getMsgs: MsgsController.getMsgs
 };
 
 module.exports = root;
