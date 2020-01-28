@@ -1,23 +1,20 @@
 const Post = require('../models/posts');
 
-const addPost = (req, res) => {
-  const { title, content, } = req.body;
+const addPost = async (title, content, img) => {
 
   const post = new Post({
     title,
     content,
-    img: req.files.featured.name,
-    created_at: new Date().toISOString()
+    img,
+    created_at: new Date().toISOString(),
   });
 
-  post.save().then(() => {
-    return res.status(200).json({
-      message: 'Post has been added'
-    }).end();
-  });
+  const result = await post.save();
+  return result;
+
 }
 
-const getPosts = async (req, res, next) => {
+const getPosts = async () => {
   // const paginationLimit = 2;
   // // const { id = 0 } = req.params;
   // const id = 0;
@@ -34,23 +31,14 @@ const getPosts = async (req, res, next) => {
   return docs;
 }
 
-const getPostById = (req, res, next) => {
-  const { id } = req.params;
-  Post.findById({_id: id}, function (err, post) {
-    if (err) return next(err);
-    if (0 === post.length) return next(new NotFoundError);
-    return res.end(JSON.stringify(post));
-  });
+const getPostById = async (id) => {
+  const result = await Post.findById(id);
+  return result;
 }
 
-const deletePostById = (req, res, next) => {
-  const { id } = req.params;
-  Post.deleteOne({_id: id}, function (err) {
-    if (err) return next(err);
-    return res.status(200).json({
-      message: 'Post has been deleted'
-    }).end();
-  });
+const deletePostById = async (id) => {
+  const result = await Post.deleteOne({_id: id});
+  return result;
 }
 
 const updatePostById = (req, res, next) => {

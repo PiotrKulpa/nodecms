@@ -22,10 +22,13 @@ const schema = buildSchema(`
     hello2: String
     findUser(id: Int): User
     getPosts: [Post]
+    getPostById(id: String): Post
     getMsgs: [Msgs]
   }
   type Mutation {
     setMessage(message: String): String
+    addPost(title: String, content: String, img: String): Post
+    deletePostById(id: String): Post
   }
 `);
 

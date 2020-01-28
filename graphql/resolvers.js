@@ -14,7 +14,10 @@ const root = {
     console.log(fakeDatabase);
     return message;
   },
+  addPost: ({title, content, img}) => PostsController.addPost(title, content, img),
   getPosts: PostsController.getPosts,
+  getPostById: ({id}) => PostsController.getPostById(id),
+  deletePostById: ({id}) => PostsController.deletePostById(id),
   getMsgs: MsgsController.getMsgs
 };
 
