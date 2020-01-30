@@ -29,6 +29,7 @@ const schema = buildSchema(`
     setMessage(message: String): String
     addPost(title: String, content: String, img: String): Post
     deletePostById(id: String): Post
+    updatePostById(id: String, title: String, content: String, img: String): Int
   }
 `);
 

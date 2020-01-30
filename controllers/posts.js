@@ -15,17 +15,6 @@ const addPost = async (title, content, img) => {
 }
 
 const getPosts = async () => {
-  // const paginationLimit = 2;
-  // // const { id = 0 } = req.params;
-  // const id = 0;
-  // Post.find().sort({ created_at: -1 }).skip(id * paginationLimit).limit(paginationLimit).lean().exec(function (err, posts) {
-  //   if (err) return next(err);
-  //   if (0 === posts.length) return next(new NotFoundError);
-  //   // return res.end(JSON.stringify(posts));
-  //   console.log(typeof posts[0].created_at);
-    
-  //   return posts;
-  // });
   const docs = await Post.find({}).lean();
   console.log(docs);
   return docs;
@@ -41,16 +30,9 @@ const deletePostById = async (id) => {
   return result;
 }
 
-const updatePostById = (req, res, next) => {
-  const { id } = req.params;
-  const { title, content, } = req.body;
-  Post.updateOne({_id: id}, {
-    title,
-    content,
-    img: req.files.featured.name,
-    created_at: new Date().toISOString(),
-  })
-  .then(() => res.status(200).json({message: 'Post has been updated'}).end());
+const updatePostById = async (id, title, content, img) => {
+  const res = await Post.updateOne({ _id: id }, { title, content });  
+  return res.nModified;
 }
 
 module.exports = {

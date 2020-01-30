@@ -18,6 +18,7 @@ const root = {
   getPosts: PostsController.getPosts,
   getPostById: ({id}) => PostsController.getPostById(id),
   deletePostById: ({id}) => PostsController.deletePostById(id),
+  updatePostById: ({id, title, content, img}) => PostsController.updatePostById(id, title, content, img),
   getMsgs: MsgsController.getMsgs
 };
 
