@@ -1,10 +1,16 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
-const checkJWTAuthentication = (req, res, next) => {
+const checkJWTAuthentication = (args, context, info) => {
+  console.log(context.req.headers);
+  
   // We can obtain the session token from the requests cookies, which come with every request
-  const token = req.cookies.token;
-
+  //TODO: replace req by context, add next argument to exe method if success
+  // const token = req.cookies.token;
+  const { req: {headers: {token = ''} = {} } = {} } = context;
+  console.log('token to', token);
+  
+return 'okok'
   // if the cookie is not set, return an unauthorized error
   if (!token) {
     return res.status(401).json({

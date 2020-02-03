@@ -41,11 +41,14 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
+app.use('/graphql',  
+  graphqlHTTP((req, res) =>({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+    context: {req, res},
+  }))
+);
 
 app.use('/', routes);
 
