@@ -18,7 +18,7 @@ const schema = buildSchema(`
     content: String
   }
   type Query {
-    hello(id: Int): String
+    hello: String
     hello2: String
     findUser(id: Int): User
     getPosts: [Post]

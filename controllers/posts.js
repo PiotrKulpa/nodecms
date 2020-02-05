@@ -20,12 +20,12 @@ const getPosts = async () => {
   return docs;
 }
 
-const getPostById = async (id) => {
+const getPostById = async ({id}) => {
   const result = await Post.findById(id);
   return result;
 }
 
-const deletePostById = async (id) => {
+const deletePostById = async ({id}) => {
   const result = await Post.deleteOne({_id: id});
   return result;
 }

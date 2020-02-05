@@ -7,7 +7,7 @@ var myTab = [{id: 1, name: "Piotr"}, {id: 2, name: "Ala"}];
 var fakeDatabase = {};
 
 const root = {
-  hello: ({id}, context) => checkJWTAuthentication(id, context) ,
+  hello: (args, context) => checkJWTAuthentication({context, cb: ()=>'cb f() here'}),
   hello2: () => 'Hello world2!',
   findUser: ({id}) => myTab.filter((el) => el.id === id)[0], //resolver takes arguments, they are passed as one “args” object, as the first argument to the function
   setMessage: ({message}) => {
@@ -17,8 +17,8 @@ const root = {
   },
   addPost: ({title, content, img}) => PostsController.addPost(title, content, img),
   getPosts: PostsController.getPosts,
-  getPostById: ({id}) => PostsController.getPostById(id),
-  deletePostById: ({id}) => PostsController.deletePostById(id),
+  getPostById: (args, context) => checkJWTAuthentication({args, context, cb: PostsController.getPostById}),
+  deletePostById: (args, context) => checkJWTAuthentication({args, context, cb: PostsController.deletePostById}),
   updatePostById: ({id, title, content, img}) => PostsController.updatePostById(id, title, content, img),
   getMsgs: MsgsController.getMsgs
 };
