@@ -7,7 +7,7 @@ var myTab = [{id: 1, name: "Piotr"}, {id: 2, name: "Ala"}];
 var fakeDatabase = {};
 
 const root = {
-  hello: (args, context, info) => checkJWTAuthentication(args, context, info) ,
+  hello: ({id}, context) => checkJWTAuthentication(id, context) ,
   hello2: () => 'Hello world2!',
   findUser: ({id}) => myTab.filter((el) => el.id === id)[0], //resolver takes arguments, they are passed as one “args” object, as the first argument to the function
   setMessage: ({message}) => {

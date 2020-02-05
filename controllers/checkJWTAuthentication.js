@@ -1,21 +1,17 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
-const checkJWTAuthentication = (args, context, info) => {
-  console.log(context.req.headers);
-  
+const checkJWTAuthentication = (id, context, info) => {
   // We can obtain the session token from the requests cookies, which come with every request
   //TODO: replace req by context, add next argument to exe method if success
   // const token = req.cookies.token;
-  const { req: {headers: {token = ''} = {} } = {} } = context;
-  console.log('token to', context.req.headers.cookie);
-  
-return 'okok'
+  const { req: {cookies: {token = ''} = {} } = {} } = context;
+  // console.log('token to', context.req.cookies.token);
+  console.log(id);
+
   // if the cookie is not set, return an unauthorized error
   if (!token) {
-    return res.status(401).json({
-      message: 'Something is not right',
-    }).end()
+    return 'Something is not right'
   }
 
   var payload
@@ -28,20 +24,16 @@ return 'okok'
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
       // if the error thrown is because the JWT is unauthorized, return a 401 error
-      return res.status(401).json({
-        message: 'Something is not right',
-      }).end();
+      return 'JWT is unauthorized'
     }
     // otherwise, return a bad request error
-    return res.status(400).json({
-      message: 'Something is not right',
-    }).end()
+    return 'JWT bad request error'
   }
 
   // Finally, return the welcome message to the user, along with their
   // username given in the token
   // or do next()
-  next();
+  return 'JWT authorization OK'
 }
 
 module.exports = checkJWTAuthentication;
