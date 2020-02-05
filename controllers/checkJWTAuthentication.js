@@ -8,7 +8,7 @@ const checkJWTAuthentication = (args, context, info) => {
   //TODO: replace req by context, add next argument to exe method if success
   // const token = req.cookies.token;
   const { req: {headers: {token = ''} = {} } = {} } = context;
-  console.log('token to', token);
+  console.log('token to', context.req.headers.cookie);
   
 return 'okok'
   // if the cookie is not set, return an unauthorized error
