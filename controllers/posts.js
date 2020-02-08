@@ -1,6 +1,6 @@
 const Post = require('../models/posts');
 
-const addPost = async (title, content, img) => {
+const addPost = async ({title, content, img}) => {
 
   const post = new Post({
     title,
@@ -30,8 +30,11 @@ const deletePostById = async ({id}) => {
   return result;
 }
 
-const updatePostById = async (id, title, content, img) => {
-  const res = await Post.updateOne({ _id: id }, { title, content });  
+const updatePostById = async (args) => {
+  const id = args.id;
+  delete args.id
+  console.log(args);
+  const res = await Post.updateOne({ _id: id }, args);  
   return res.nModified;
 }
 

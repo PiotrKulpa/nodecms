@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
 const checkJWTAuthentication = ({args = {}, context, cb}) => {
-
+  
   const { req: {cookies: {token = ''} = {} } = {} } = context;
+  
   
   // if the cookie is not set, return an unauthorized error
   if (!token) {
