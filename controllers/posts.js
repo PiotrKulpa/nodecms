@@ -16,24 +16,22 @@ const addPost = async ({title, content, img}) => {
 
 const getPosts = async () => {
   const docs = await Post.find({}).lean();
-  console.log(docs);
   return docs;
 }
 
-const getPostById = async ({id}) => {
+const getPostById = async (id) => {
   const result = await Post.findById(id);
   return result;
 }
 
 const deletePostById = async ({id}) => {
   const result = await Post.deleteOne({_id: id});
-  return result;
+  return result.deletedCount;
 }
 
 const updatePostById = async (args) => {
   const id = args.id;
   delete args.id
-  console.log(args);
   const res = await Post.updateOne({ _id: id }, args);  
   return res.nModified;
 }
