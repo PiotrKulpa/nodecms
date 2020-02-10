@@ -4,7 +4,7 @@ const schema = buildSchema(`
   scalar MyDate
   type User {
     id: Int
-    name: String
+    username: String
   }
   type Post {
     title: String
@@ -18,6 +18,8 @@ const schema = buildSchema(`
     getPostById(id: String): Post
   }
   type Mutation {
+    register(username: String, password: String): User
+    login(username: String, password: String): User
     addPost(title: String, content: String, img: String): Post
     deletePostById(id: String): Int
     updatePostById(id: String, title: String, content: String, img: String): Int

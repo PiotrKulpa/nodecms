@@ -12,6 +12,7 @@ var flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
+var GraphQLLocalStrategy = require('graphql-passport').GraphQLLocalStrategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -35,11 +36,28 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
+// app.use(passport.initialize());
 app.use(flash());
-app.use(passport.session());
+// app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+
+// passport config
+var Account = require('./models/account');
+passport.use(
+  new GraphQLLocalStrategy((username, password, done) => {
+    const users = new Account;
+    const matchingUser = users.find(user => username === user.username && password === user.password);
+    console.log(matchingUser);
+    
+    const error = matchingUser ? null : new Error('no matching user');
+    done(error, matchingUser);
+  }),
+);
+app.use(passport.initialize());
+// passport.use(new LocalStrategy(Account.authenticate()));
+// passport.serializeUser(Account.serializeUser());
+// passport.deserializeUser(Account.deserializeUser());
 
 app.use('/graphql',  
   graphqlHTTP((req, res) =>({
@@ -51,12 +69,6 @@ app.use('/graphql',
 );
 
 app.use('/', routes);
-
-// passport config
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
 mongoose.connect('mongodb://localhost/nodecms');
