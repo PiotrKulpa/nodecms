@@ -4,8 +4,7 @@ const config = require('../config.json');
 const checkJWTAuthentication = ({args = {}, context, cb}) => {
   
   const { req: {cookies: {token = ''} = {} } = {} } = context;
-  
-  
+   
   // if the cookie is not set, return an unauthorized error
   if (!token) {
     return 'Something is not right'
@@ -18,6 +17,7 @@ const checkJWTAuthentication = ({args = {}, context, cb}) => {
     // if the token is invalid (if it has expired according to the expiry time we set on sign in),
     // or if the signature does not match
     payload = jwt.verify(token, config.jwtSecret)
+   
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
       // if the error thrown is because the JWT is unauthorized, return a 401 error
