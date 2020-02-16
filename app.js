@@ -9,8 +9,9 @@ const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 const graphqlHTTP = require('express-graphql');
 
-const schema = require('./graphql/schema')
-const root = require('./graphql/resolvers')
+const schema = require('./graphql/schema');
+const root = require('./graphql/resolvers');
+const getErrorCode = require('./utilities/getErrorCode');
 
 const app = express();
 
@@ -28,6 +29,11 @@ app.use('/graphql',
     rootValue: root,
     graphiql: true,
     context: {req, res},
+    formatError: (err) => {
+      console.log(err);
+      const error = getErrorCode(err.message)
+      return ({ message: error.message, statusCode: error.statusCode })
+    }
   }))
 );
 
