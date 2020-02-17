@@ -30,9 +30,12 @@ app.use('/graphql',
     graphiql: true,
     context: {req, res},
     formatError: (err) => {
-      console.log(err);
       const error = getErrorCode(err.message)
-      return ({ message: error.message, statusCode: error.statusCode })
+      if(error) {
+        return ({ message: error.message, statusCode: error.statusCode });
+      } else {
+        return ({ message: 'Server error.', statusCode: 500 });
+      }
     }
   }))
 );

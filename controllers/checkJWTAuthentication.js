@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config.json');
+const { errorName } = require('../utilities/errorCodes');
 
 const checkJWTAuthentication = ({args = {}, context, cb}) => {
   
   const { req: {cookies: {token = ''} = {} } = {} } = context;
-   
+  
   // if the cookie is not set, return an unauthorized error
   if (!token) {
-    return 'Something is not right'
+    throw new Error(errorName.AUTH_REQUIRED);
   }
   
   var payload
@@ -19,12 +20,13 @@ const checkJWTAuthentication = ({args = {}, context, cb}) => {
     payload = jwt.verify(token, config.jwtSecret)
    
   } catch (e) {
+    
     if (e instanceof jwt.JsonWebTokenError) {
       // if the error thrown is because the JWT is unauthorized, return a 401 error
-      return 'JWT is unauthorized'
+      throw new Error(errorName.AUTH_REQUIRED);
     }
     // otherwise, return a bad request error
-    return 'JWT bad request error'
+    throw new Error(errorName.SERVER_ERROR);
   }
   // Finally, execute callback, along with their
   // username given in the token

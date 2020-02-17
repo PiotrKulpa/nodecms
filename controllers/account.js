@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const Account = require('../models/account');
 const saltRounds = 10;
 const config = require('../config.json');
-const { errorName } = require('../utilities/errorCodes')
+const { errorName } = require('../utilities/errorCodes');
 
 const register =  async ({username, password}) => {
   
